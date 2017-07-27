@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+{% extends 'MY_template.html' %}
+{% block content %}
+    {% if type == 'books' %}
+        {% include 'corpus_list_books.html' %}
+    {% elif type == 'articles' %}
+        {% include 'corpus_list_articles.html' ignore missing %}
+        {#% include 'missing1.html' ignore missing %#}
+    {% elif type == 'all' %}
+        {% include 'corpus_list_books.html' %}
+        {% include 'corpus_list_articles.html' ignore missing %}
+	{# Includes both templates #}
+    {% else %}
+        Please specify the type you want: books, articles or all.
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if type == 'books' %}
+        Books in Archive
+    {% elif type == 'articles' %}
+        Articles in Archive
+    {% elif type == 'all' %}
+        Books and Articles in Archive
+    {% endif %}
+{% endblock %}
