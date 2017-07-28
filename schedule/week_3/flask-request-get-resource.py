@@ -28,12 +28,19 @@ def get_local_resource_with_value(resource_name = '', value = ''):
 
 @app.route("/neh-artifact/<idnbr>")
 def get_neh_artifact(idnbr = ''):
-    return("Request for artefact: " + idnbr)
+    #return render_template("resource.html", resource_name=idnbr)
+    primary_accept = get_list_comma_header(get_request_header('Accept', ''))[0]
+    if (primary_accept == "text/html"):
+        return ("Request for artifact: " + idnbr + " You primarily want: " + primary_accept + " " + " but not available yet.", 404)
+    return ("Request for artifact: " + idnbr + " You primarily want: " + primary_accept) 
 
-@app.route("/corpus/<type>") 
-def get_corpus_with_type(type = ''):
-    return render_template("corpus_list.html", type=type)
-    
+def get_list_comma_header(header_value):
+    return [x.strip() for x in header_value.split(',')]
+
+def get_request_header(header, default):
+    # Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    return request.headers.get(header, default)
+
 def get_request_value_with_fallback(key):
     if request.args.get(key):
         return request.args.get(key)
